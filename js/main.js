@@ -355,4 +355,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  // ============================================================
+  // 16. COOKIE CONSENT BANNER (Bottom-Left)
+  // ============================================================
+  const cookieBanner = document.getElementById('cookie-consent-banner');
+  const acceptBtn    = document.getElementById('cookie-accept-btn');
+  const rejectBtn    = document.getElementById('cookie-reject-btn');
+
+  if (cookieBanner) {
+    const consent = localStorage.getItem('onsra_cookie_consent');
+    if (!consent) {
+      setTimeout(() => {
+        cookieBanner.classList.add('show');
+      }, 700);
+    }
+
+    acceptBtn?.addEventListener('click', () => {
+      localStorage.setItem('onsra_cookie_consent', 'accepted');
+      cookieBanner.classList.remove('show');
+    });
+
+    rejectBtn?.addEventListener('click', () => {
+      localStorage.setItem('onsra_cookie_consent', 'rejected');
+      cookieBanner.classList.remove('show');
+    });
+  }
+
 });
