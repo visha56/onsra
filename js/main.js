@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
-        // Unobserve after reveal for performance
         revealObserver.unobserve(entry.target);
       }
     });
@@ -102,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let autoPlay = null;
     const total  = slides.length;
 
-    // Create dots
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
@@ -125,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn?.addEventListener('click', () => { clearInterval(autoPlay); prevSlide(); startAutoPlay(); });
     nextBtn?.addEventListener('click', () => { clearInterval(autoPlay); nextSlide(); startAutoPlay(); });
 
-    // Touch/swipe support
     let startX = 0;
     carouselTrack.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
     carouselTrack.addEventListener('touchend',   e => {
@@ -139,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startAutoPlay();
 
-    // Pause on hover
     carouselTrack.addEventListener('mouseenter', () => clearInterval(autoPlay));
     carouselTrack.addEventListener('mouseleave', () => startAutoPlay());
   }
@@ -234,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.location.href = `mailto:info@onsrayoga.com?subject=${encodeURIComponent(subject)}&body=${body}`;
 
-    // Show success message
     showFormSuccess(bookingForm);
   });
 
@@ -315,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (answer) {
         answer.style.maxHeight = isOpen ? answer.scrollHeight + 'px' : '0';
       }
-      // Close others
       document.querySelectorAll('.faq-item').forEach(other => {
         if (other !== item) {
           other.classList.remove('open');
@@ -325,5 +319,40 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+
+  // ============================================================
+  // 15. INSTAGRAM TABS & REELS SCROLLER
+  // ============================================================
+  const instaTabs = document.querySelectorAll('.insta-tab');
+  const reelsView = document.getElementById('insta-reels-view');
+  const photosView = document.getElementById('insta-photos-view');
+  const reelsScroller = document.querySelector('.reels-scroller');
+  const reelsPrevBtn = document.querySelector('.reels-btn-prev');
+  const reelsNextBtn = document.querySelector('.reels-btn-next');
+
+  instaTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      instaTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.target;
+      if (target === 'reels') {
+        if (reelsView) reelsView.style.display = 'block';
+        if (photosView) photosView.style.display = 'none';
+      } else {
+        if (reelsView) reelsView.style.display = 'none';
+        if (photosView) photosView.style.display = 'grid';
+      }
+    });
+  });
+
+  if (reelsScroller) {
+    reelsPrevBtn?.addEventListener('click', () => {
+      reelsScroller.scrollBy({ left: -280, behavior: 'smooth' });
+    });
+    reelsNextBtn?.addEventListener('click', () => {
+      reelsScroller.scrollBy({ left: 280, behavior: 'smooth' });
+    });
+  }
 
 });
