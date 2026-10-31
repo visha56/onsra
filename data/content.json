@@ -1,0 +1,244 @@
+{
+  "general": {
+    "siteName": "ONSRA Yoga Ashram Goa",
+    "tagline": "Where Ancient Wisdom Meets Ocean Breeze",
+    "announcement": "⚡ November 2026 Batch — Limited Seats &nbsp;|&nbsp; 🌸 2027 Batches — Admissions Open &nbsp;|&nbsp; 🧘 Early Bird Pricing Available",
+    "primaryPhone": "+91 98502 50033",
+    "secondaryPhone": "+91 98765 43210",
+    "whatsappNumber": "919850250033",
+    "email": "info@onsrayoga.com",
+    "instagramUrl": "https://www.instagram.com/onsra_yoga__ashram_goa/",
+    "instagramHandle": "@onsra_yoga__ashram_goa",
+    "location": "ONSRA Yoga Ashram, Anjuna, North Goa — 403509, Goa, India"
+  },
+  "hero": {
+    "badge": "🌸 Yoga Alliance Certified Ashram in Goa",
+    "title": "Where Ancient Wisdom Meets Ocean Breeze",
+    "subtitle": "Join our certified 200-Hour Yoga Teacher Training and transformative retreats in the lush heart of Goa, India. Authentic Hatha, Pranayama, Meditation & Ashram Living.",
+    "ctaText": "Explore 200-Hr TTC",
+    "ctaLink": "training.html",
+    "secondaryCtaText": "Apply for November Batch",
+    "secondaryCtaLink": "contact.html#booking"
+  },
+  "batches": [
+    {
+      "id": 1,
+      "name": "November 2026 Batch",
+      "dates": "Nov 2 – Nov 25, 2026",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "status": "Filling Fast",
+      "statusClass": "status-filling"
+    },
+    {
+      "id": 2,
+      "name": "December 2026 Batch",
+      "dates": "Dec 1 – Dec 24, 2026",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "status": "Open",
+      "statusClass": "status-open"
+    },
+    {
+      "id": 3,
+      "name": "January 2027 Batch",
+      "dates": "Jan 4 – Jan 27, 2027",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "status": "Open",
+      "statusClass": "status-open"
+    },
+    {
+      "id": 4,
+      "name": "February 2027 Batch",
+      "dates": "Feb 1 – Feb 24, 2027",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "status": "Open",
+      "statusClass": "status-open"
+    },
+    {
+      "id": 5,
+      "name": "March 2027 Batch",
+      "dates": "Mar 1 – Mar 24, 2027",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "status": "Open",
+      "statusClass": "status-open"
+    }
+  ],
+  "schedule": [
+    {
+      "time": "5:30 – 6:00 AM",
+      "activity": "Wake Up & Personal Hygiene",
+      "icon": "🌅"
+    },
+    {
+      "time": "6:00 – 7:00 AM",
+      "activity": "Morning Meditation & Pranayama",
+      "icon": "🧘"
+    },
+    {
+      "time": "7:00 – 9:00 AM",
+      "activity": "Hatha Yoga Asana Practice",
+      "icon": "🤸"
+    },
+    {
+      "time": "9:00 – 10:00 AM",
+      "activity": "Breakfast & Rest",
+      "icon": "🥣"
+    },
+    {
+      "time": "10:00 – 11:30 AM",
+      "activity": "Yoga Philosophy & Sutras",
+      "icon": "📚"
+    },
+    {
+      "time": "11:30 AM – 1:00 PM",
+      "activity": "Anatomy & Physiology",
+      "icon": "💪"
+    },
+    {
+      "time": "1:00 – 2:00 PM",
+      "activity": "Lunch & Rest",
+      "icon": "🍽"
+    },
+    {
+      "time": "2:00 – 3:30 PM",
+      "activity": "Self-Study / Practical Assignments",
+      "icon": "📖"
+    },
+    {
+      "time": "3:30 – 5:30 PM",
+      "activity": "Alignment, Adjustment & Teaching Practice",
+      "icon": "🎯"
+    },
+    {
+      "time": "5:30 – 6:30 PM",
+      "activity": "Pranayama & Meditation (Evening)",
+      "icon": "🌬"
+    },
+    {
+      "time": "6:30 – 7:00 PM",
+      "activity": "Herbal Tea Break",
+      "icon": "🫖"
+    },
+    {
+      "time": "7:00 – 8:00 PM",
+      "activity": "Dinner",
+      "icon": "🍽"
+    },
+    {
+      "time": "8:00 – 9:00 PM",
+      "activity": "Satsang / Mantra Chanting / Kirtan",
+      "icon": "📿"
+    },
+    {
+      "time": "10:00 PM",
+      "activity": "Lights Out / Rest",
+      "icon": "🌙"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "shared",
+      "title": "Shared Room",
+      "image": "images/dsc01023.jpg",
+      "alt": "Shared ashram room",
+      "description": "2–4 beds per room in our comfortable shared ashram dormitory. Perfect for solo travelers looking to connect with the community.",
+      "amenities": [
+        "🛏 Bunk Beds",
+        "🌀 Fan",
+        "🚿 Shared Bath",
+        "🔒 Locker"
+      ],
+      "inquireLink": "contact.html#booking"
+    },
+    {
+      "id": "private",
+      "title": "Private Room",
+      "image": "images/room-private.jpg",
+      "alt": "Private ashram room",
+      "description": "Your own quiet sanctuary — a private room with garden views, ideal for deep rest and self-study during the TTC.",
+      "amenities": [
+        "🛏 Single Bed",
+        "❄️ AC/Fan",
+        "🚿 Private Bath",
+        "📖 Study Desk"
+      ],
+      "inquireLink": "contact.html#booking"
+    },
+    {
+      "id": "twin",
+      "title": "Twin / Couple Room",
+      "image": "images/womens-retreat.jpg",
+      "alt": "Couple room ashram",
+      "description": "Ideal for couples or friends attending together — a comfortable twin room with all ashram amenities.",
+      "amenities": [
+        "🛏 Twin Beds",
+        "❄️ AC/Fan",
+        "🚿 Private Bath",
+        "🌿 Garden View"
+      ],
+      "inquireLink": "contact.html#booking"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Sarah Mitchell",
+      "location": "🇬🇧 London, UK",
+      "avatar": "S",
+      "rating": 5,
+      "text": "My 24 days at ONSRA Yoga Ashram completely transformed my life. The teachers are deeply knowledgeable, the ashram environment is pure magic, and learning traditional Hatha in Goa felt like coming home. I returned to London a certified teacher — and a changed person."
+    },
+    {
+      "id": 2,
+      "name": "Maria González",
+      "location": "🇪🇸 Barcelona, Spain",
+      "avatar": "M",
+      "rating": 5,
+      "text": "I came as a complete beginner with no prior yoga experience. The teachers were incredibly patient and supportive. The curriculum was thorough — asana, pranayama, philosophy, anatomy — everything you need. Goa's energy made it extra special."
+    },
+    {
+      "id": 3,
+      "name": "Anika Weber",
+      "location": "🇩🇪 Berlin, Germany",
+      "avatar": "A",
+      "rating": 5,
+      "text": "The 'Nourish Her' retreat was a revelation. Three days of yoga, breathwork, workshops and beautiful community — all by the ocean in Goa. I left feeling deeply nourished, confident and reconnected to myself. Absolutely life-changing."
+    },
+    {
+      "id": 4,
+      "name": "Jessica Thompson",
+      "location": "🇦🇺 Melbourne, Australia",
+      "avatar": "J",
+      "rating": 5,
+      "text": "As a yoga enthusiast from Australia, I wanted a traditional experience — and ONSRA delivered. The Hatha practice was deep and classical, the philosophy sessions opened my mind, and the Goa atmosphere was perfect. I'm already planning to come back."
+    }
+  ],
+  "programs": [
+    {
+      "id": "ttc200",
+      "title": "200-Hr Yoga Teacher Training",
+      "tag": "⭐ Most Popular",
+      "duration": "24 Days",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "description": "An immersive, Yoga Alliance USA certified 200-Hour TTC covering classical Hatha, Pranayama, Meditation, Anatomy and Teaching Methodology. November 2026 & 2027 batches open.",
+      "image": "images/ttc-featured.jpg",
+      "link": "training.html"
+    },
+    {
+      "id": "retreat-womens",
+      "title": "Nourish Her: Women's Retreat",
+      "tag": "🌿 Retreat",
+      "duration": "3 Days",
+      "location": "Goa, India",
+      "style": "Restorative & Breathwork",
+      "description": "A sacred ocean-side sanctuary for women to rest, reset and reconnect through grounding yoga, breathwork, sisterhood circles and nourishing sattvic food.",
+      "image": "images/womens-retreat.jpg",
+      "link": "retreats.html"
+    }
+  ]
+}

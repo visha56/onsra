@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ONSRA Admin Panel | व्यवस्थापन डॅशबोर्ड</title>
+  <link rel="icon" type="image/png" href="../images/logo.png" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <img src="../images/logo.png" alt="ONSRA Logo" />
+      <div>
+        <h1>ONSRA Yoga Ashram</h1>
+        <span style="font-size:0.75rem;">वेबसाइट ॲडमिन पॅनल</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="status-badge" id="status-indicator">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">तपासत आहे...</span>
+      </div>
+      <button type="button" class="btn btn-outline btn-sm" id="btn-open-token-modal">🔑 GitHub Token</button>
+      <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">👁 वेबसाईट पहा</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button type="button" class="tab-btn active" data-tab="tab-general">📞 संपर्क व माहिती</button>
+      <button type="button" class="tab-btn" data-tab="tab-batches">🗓 शेड्युल व बॅचेस</button>
+      <button type="button" class="tab-btn" data-tab="tab-rooms">🛏 खोल्यांचे प्रकार (Rooms)</button>
+      <button type="button" class="tab-btn" data-tab="tab-testimonials">⭐ रिव्ह्यूज (Stories)</button>
+      <button type="button" class="tab-btn" data-tab="tab-gallery">🖼 फोटो व्यवस्थापन (Photos)</button>
+      <button type="button" class="tab-btn" data-tab="tab-hero">📄 मुख्य मजकूर (Hero & Info)</button>
+    </nav>
+
+    <!-- TAB 1: General & Contact -->
+    <div class="tab-pane active" id="tab-general">
+      <div class="card">
+        <div class="card-title">
+          <span>📞 संपर्क माहिती आणि सोशल मीडिया लिंक्स</span>
+        </div>
+        <p class="card-subtitle">येथून तुम्ही फोन नंबर, व्हॉट्सॲप, ईमेल आणि Instagram प्रोफाइल थेट अपडेट करू शकता.</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>वेबसाइटचे नाव (Site Name)</label>
+            <input type="text" id="input-site-name" />
+          </div>
+          <div class="form-group">
+            <label>टॅगलाइन (Tagline)</label>
+            <input type="text" id="input-tagline" />
+          </div>
+          <div class="form-group full">
+            <label>टॉप अनाउन्समेंट बार मजकूर (Top Bar Text)</label>
+            <input type="text" id="input-announcement" placeholder="उदा. ⚡ November 2026 Batch - Limited Seats" />
+          </div>
+          <div class="form-group">
+            <label>मुख्य फोन नंबर (Primary Phone - WhatsApp)</label>
+            <input type="tel" id="input-phone1" placeholder="+91 98502 50033" />
+          </div>
+          <div class="form-group">
+            <label>दुसरा फोन नंबर (Secondary Phone)</label>
+            <input type="tel" id="input-phone2" placeholder="+91 98765 43210" />
+          </div>
+          <div class="form-group">
+            <label>WhatsApp नंबर (देश कोडसह, स्पेसशिवाय)</label>
+            <input type="text" id="input-whatsapp" placeholder="919850250033" />
+          </div>
+          <div class="form-group">
+            <label>ईमेल पत्ता (Official Email)</label>
+            <input type="email" id="input-email" placeholder="info@onsrayoga.com" />
+          </div>
+          <div class="form-group full">
+            <label>Instagram URL</label>
+            <input type="url" id="input-instagram-url" placeholder="https://www.instagram.com/onsra_yoga__ashram_goa/" />
+          </div>
+          <div class="form-group full">
+            <label>आश्रम पत्ता (Physical Address)</label>
+            <textarea id="input-location"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Schedule & Batches -->
+    <div class="tab-pane" id="tab-batches">
+      <!-- Batches -->
+      <div class="card">
+        <div class="card-title">
+          <span>🗓 आगामी TTC बॅचेस (Upcoming Batches)</span>
+          <button type="button" class="btn btn-primary btn-sm" onclick="ONSRA_ADMIN.addBatch()">➕ नवीन बॅच जोडा</button>
+        </div>
+        <p class="card-subtitle">येथे ट्रेनिंग पेज आणि होमपेजवरील TTC बॅचेसच्या तारखा आणि ओपनिंग स्टेटस व्यवस्थापित करा.</p>
+        <div id="batches-list"></div>
+      </div>
+
+      <!-- Daily Schedule -->
+      <div class="card">
+        <div class="card-title">
+          <span>⏰ दैनिक आश्रम वेळापत्रक (Daily Schedule)</span>
+          <button type="button" class="btn btn-primary btn-sm" onclick="ONSRA_ADMIN.addSchedule()">➕ नवीन वेळ जोडा</button>
+        </div>
+        <p class="card-subtitle">Schedule पेजवरील सकाळपासून रात्रीपर्यंतचे वेळापत्रक येथे अपडेट करा.</p>
+        <div id="schedule-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Rooms & Accommodation -->
+    <div class="tab-pane" id="tab-rooms">
+      <div class="card">
+        <div class="card-title">
+          <span>🛏 खोल्यांचे प्रकार आणि फोटो (Accommodation Rooms)</span>
+        </div>
+        <p class="card-subtitle">Accommodation पेजवरील खोल्यांची नावे, फोटो, वर्णन आणि सुविधा (Amenities) बदला.</p>
+        <div id="rooms-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Student Stories / Testimonials -->
+    <div class="tab-pane" id="tab-testimonials">
+      <div class="card">
+        <div class="card-title">
+          <span>⭐ विद्यार्थ्यांचे अभिप्राय (Student Stories & Reviews)</span>
+          <button type="button" class="btn btn-primary btn-sm" onclick="ONSRA_ADMIN.addTestimonial()">➕ नवीन रिव्ह्यू जोडा</button>
+        </div>
+        <p class="card-subtitle">होमपेजवरील टेस्टीमोनियल स्लाइडरमधील रिव्ह्यूज व्यवस्थापित करा.</p>
+        <div id="testimonials-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Photo Manager & Gallery -->
+    <div class="tab-pane" id="tab-gallery">
+      <div class="card">
+        <div class="card-title">
+          <span>🖼 नवीन फोटो अपलोड करा (Upload New Image)</span>
+        </div>
+        <p class="card-subtitle">तुमच्या कॉम्प्युटर किंवा मोबाईलवरून नवीन फोटो अपलोड करा. तो थेट वेबसाईटच्या images/ फोल्डरमध्ये सेव्ह होईल.</p>
+
+        <div style="background:#FAF8F5; border:2px dashed var(--border); border-radius:8px; padding:32px; text-align:center;">
+          <p style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">येथे फोटो निवडा किंवा ड्रॅग करा</p>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">JPG, PNG किंवा WebP फॉरमॅट सपोर्टेड</p>
+          <input type="file" id="admin-image-upload" accept="image/*" style="display:none;" />
+          <button type="button" class="btn btn-forest" onclick="document.getElementById('admin-image-upload').click()">📁 फोटो फाईल निवडा</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>📸 वेबसाईटवरील उपलब्ध फोटो गॅलरी</span>
+        </div>
+        <p class="card-subtitle">खालील कोणत्याही फोटोची लिंक एका क्लिकवर कॉपी करून तुम्ही कोणत्याही रूम किंवा पेजसाठी वापरू शकता.</p>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Hero & Page Content -->
+    <div class="tab-pane" id="tab-hero">
+      <div class="card">
+        <div class="card-title">
+          <span>🏠 होमपेज मुख्य बॅनर (Hero Section)</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>बॅज मजकूर (Badge)</label>
+            <input type="text" id="input-hero-badge" />
+          </div>
+          <div class="form-group full">
+            <label>मुख्य शीर्षक (Heading H1)</label>
+            <input type="text" id="input-hero-title" />
+          </div>
+          <div class="form-group full">
+            <label>उपशीर्षक / माहिती (Subtitle)</label>
+            <textarea id="input-hero-sub"></textarea>
+          </div>
+          <div class="form-group">
+            <label>मुख्य बटणाचा मजकूर (Primary CTA)</label>
+            <input type="text" id="input-hero-cta" />
+          </div>
+          <div class="form-group">
+            <label>दुसऱ्या बटणाचा मजकूर (Secondary CTA)</label>
+            <input type="text" id="input-hero-sec-cta" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>🧘 200-Hour TTC मुख्य कार्ड</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>प्रोग्रामचे नाव</label>
+            <input type="text" id="input-ttc-title" />
+          </div>
+          <div class="form-group">
+            <label>प्रोग्राम फोटो पाथ</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="input-ttc-img" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="ONSRA_ADMIN.pickImageFor('input-ttc-img', 0, 'ttc')">🖼 निवडा</button>
+            </div>
+          </div>
+          <div class="form-group full">
+            <div class="img-picker-wrap">
+              <img src="../images/ttc-featured.jpg" id="ttc-preview-img" class="img-preview" alt="TTC Preview" />
+              <span style="font-size:0.85rem; color:var(--text-muted);">200-Hour TTC चे सध्याचे मुख्य फोटो प्रीव्ह्यू.</span>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>संक्षिप्त माहिती (Short Description)</label>
+            <textarea id="input-ttc-desc"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- Floating Save Bar -->
+  <div class="save-bar">
+    <div class="save-info">
+      <span>💡 केलेले बदल सेव्ह करण्यासाठी उजवीकडील बटण दाबा.</span>
+    </div>
+    <div class="save-buttons">
+      <button type="button" class="btn btn-secondary" id="btn-save-all">💾 बदल सेव्ह करा (Save)</button>
+      <button type="button" class="btn btn-primary" id="btn-publish-git">🚀 GitHub वर पब्लिश करा (Publish)</button>
+    </div>
+  </div>
+
+  <!-- Token Modal -->
+  <div class="modal-backdrop" id="token-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="color:var(--forest);">🔑 GitHub Personal Access Token</h3>
+        <button type="button" class="modal-close" id="btn-close-token-modal">&times;</button>
+      </div>
+      <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:16px;">
+        थेट मोबाईल किंवा इतर कोणत्याही ब्राउझरवरून लाईव्ह वेबसाइटवर बदल सेव्ह करण्यासाठी एका मिनिटांत GitHub टोकन तयार करून येथे सेव्ह करा.
+      </p>
+
+      <div class="form-group">
+        <label>GitHub Personal Access Token (PAT):</label>
+        <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+      </div>
+
+      <div style="background:#FAF8F5; border:1px solid var(--border); border-radius:6px; padding:12px; font-size:0.82rem; margin-bottom:16px;">
+        <strong>टोकन कसे मिळवायचे (फक्त १ मिनिटांत):</strong><br />
+        १. GitHub.com ला लॉगिन करा आणि <strong>Settings &gt; Developer settings &gt; Personal access tokens &gt; Tokens (classic)</strong> वर जा.<br />
+        २. <strong>Generate new token (classic)</strong> निवडा.<br />
+        ३. फक्त <code>repo</code> या पर्यायावर टिक (check) करा आणि <strong>Generate token</strong> बटण दाबा.<br />
+        ४. आलेले टोकन कॉपी करून वरील बॉक्समध्ये पेस्ट करा. हे टोकन तुमच्याच फोन/ब्राउझरमध्ये सुरक्षित सेव्ह राहील.
+      </div>
+
+      <div style="display:flex; justify-content:space-between; gap:12px;">
+        <button type="button" class="btn btn-danger btn-sm" id="btn-clear-token">टोकन काढा</button>
+        <button type="button" class="btn btn-forest" id="btn-save-token">कनेक्ट आणि सेव्ह करा</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
+
