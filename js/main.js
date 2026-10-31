@@ -56,6 +56,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ============================================================
+  // DROPDOWN MENU INTERACTION (Hover + Click / Touch support)
+  // ============================================================
+  const dropdownItems = document.querySelectorAll('.nav-item-dropdown');
+
+  dropdownItems.forEach(item => {
+    const trigger = item.querySelector('.nav-link');
+    const dropdown = item.querySelector('.nav-dropdown');
+
+    if (trigger && dropdown) {
+      // Toggle on click
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const wasOpen = item.classList.contains('open');
+        dropdownItems.forEach(d => d.classList.remove('open'));
+        if (!wasOpen) {
+          item.classList.add('open');
+        }
+      });
+
+      // Maintain hover state
+      item.addEventListener('mouseenter', () => {
+        item.classList.add('open');
+      });
+
+      item.addEventListener('mouseleave', () => {
+        item.classList.remove('open');
+      });
+
+      // Close dropdown when any item inside is clicked
+      dropdown.querySelectorAll('a').forEach(subLink => {
+        subLink.addEventListener('click', () => {
+          item.classList.remove('open');
+        });
+      });
+    }
+  });
+
+  // Close dropdown on outside click or Escape key
+  document.addEventListener('click', (e) => {
+    dropdownItems.forEach(item => {
+      if (!item.contains(e.target)) {
+        item.classList.remove('open');
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dropdownItems.forEach(item => item.classList.remove('open'));
+    }
+  });
+
+
+  // ============================================================
   // 3. ACTIVE NAV LINK (based on current page)
   // ============================================================
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
