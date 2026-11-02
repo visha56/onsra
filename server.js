@@ -129,6 +129,28 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === '/api/delete-image' && req.method === 'POST') {
+    readBody(req, (err, body) => {
+      if (err || !body.filename) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Missing filename' }));
+        return;
+      }
+      const safeFilename = path.basename(body.filename).replace(/[^a-zA-Z0-9._-]/g, '_');
+      const targetPath = path.join(__dirname, 'images', safeFilename);
+      fs.unlink(targetPath, (unlinkErr) => {
+        if (unlinkErr && unlinkErr.code !== 'ENOENT') {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: unlinkErr.message }));
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, message: 'Image deleted successfully' }));
+      });
+    });
+    return;
+  }
+
   if (pathname === '/api/git-push' && req.method === 'POST') {
     readBody(req, (err, body) => {
       const msg = (body && body.message) ? body.message.replace(/"/g, '\\"') : 'Update from Admin Panel';

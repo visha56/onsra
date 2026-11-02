@@ -348,21 +348,65 @@
   }
 
   /* ------------------- Image Manager & Gallery ------------------- */
+  var galleryImagesCache = [];
+
   function loadGalleryImages() {
     var gallery = document.getElementById('gallery-grid');
-    if (!gallery) return;
+    if (gallery) {
+      gallery.innerHTML = '<div style="grid-column: 1/-1; padding: 24px; text-align: center; color: var(--text-muted);">फोटो लोड होत आहेत...</div>';
+    }
 
     if (isLocal) {
       fetch('/api/images')
         .then(function (res) { return res.json(); })
         .then(function (data) {
-          renderGallery(data.images || []);
+          if (data && data.images && data.images.length > 0) {
+            var items = data.images.map(function (filename) {
+              return { name: filename, path: 'images/' + filename };
+            });
+            galleryImagesCache = items;
+            renderGallery(items);
+          } else {
+            renderDefaultGallery();
+          }
         })
         .catch(function () {
           renderDefaultGallery();
         });
     } else {
-      renderDefaultGallery();
+      var token = localStorage.getItem(GITHUB_TOKEN_KEY);
+      var headers = { 'Accept': 'application/vnd.github.v3+json' };
+      if (token) headers['Authorization'] = 'token ' + token;
+
+      fetch('https://api.github.com/repos/' + GITHUB_REPO + '/contents/images?ref=' + GITHUB_BRANCH, { headers: headers })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Status ' + res.status);
+          return res.json();
+        })
+        .then(function (items) {
+          if (Array.isArray(items) && items.length > 0) {
+            var imageFiles = items
+              .filter(function (item) {
+                return item.type === 'file' && /\.(jpg|jpeg|png|webp|svg|gif)$/i.test(item.name);
+              })
+              .map(function (item) {
+                return {
+                  name: item.name,
+                  path: 'images/' + item.name,
+                  sha: item.sha,
+                  downloadUrl: item.download_url
+                };
+              });
+            galleryImagesCache = imageFiles;
+            renderGallery(imageFiles);
+          } else {
+            renderDefaultGallery();
+          }
+        })
+        .catch(function (err) {
+          console.warn('Could not load images from GitHub API, falling back to defaults:', err);
+          renderDefaultGallery();
+        });
     }
   }
 
@@ -371,22 +415,40 @@
       'ttc-featured.jpg', 'room-private.jpg', 'ttc-beach-group.jpg', 'ashram-about.jpg',
       'womens-retreat.jpg', 'hero-bg.jpg', 'logo.png', 'ig-beach-yoga.jpg', 'ig-meditation.jpg', 'ig-sunset.jpg'
     ];
-    renderGallery(defaults);
+    var items = defaults.map(function (name) {
+      return { name: name, path: 'images/' + name };
+    });
+    galleryImagesCache = items;
+    renderGallery(items);
   }
 
-  function renderGallery(files) {
+  function renderGallery(items) {
     var gallery = document.getElementById('gallery-grid');
     if (!gallery) return;
     gallery.innerHTML = '';
 
-    files.forEach(function (f) {
-      var fullPath = 'images/' + f;
+    if (!items || items.length === 0) {
+      gallery.innerHTML = '<div style="grid-column: 1/-1; padding: 24px; text-align: center; color: var(--text-muted);">कोणतेही फोटो सापडले नाहीत.</div>';
+      return;
+    }
+
+    items.forEach(function (item) {
+      var filename = typeof item === 'string' ? item : item.name;
+      var fullPath = typeof item === 'string' ? ('images/' + item) : item.path;
+      var sha = (typeof item === 'object' && item.sha) ? item.sha : '';
+      var imgSrc = '../' + fullPath;
+
       var div = document.createElement('div');
       div.className = 'gallery-item';
       div.innerHTML =
-        '<img src="../' + fullPath + '" alt="' + f + '" />' +
-        '<span>' + f + '</span>' +
-        '<button type="button" class="btn btn-secondary btn-sm" style="margin-top:4px; width:100%;" onclick="ONSRA_ADMIN.copyImagePath(\'' + fullPath + '\')">कॉपी लिंक</button>';
+        '<div style="width:100%; height:95px; overflow:hidden; border-radius:4px; background:#f1f5f9; display:flex; align-items:center; justify-content:center;">' +
+          '<img src="' + imgSrc + '" alt="' + filename + '" loading="lazy" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>Photo</text></svg>\';" />' +
+        '</div>' +
+        '<span title="' + filename + '">' + filename + '</span>' +
+        '<div style="display:flex; gap:4px; margin-top:auto;">' +
+          '<button type="button" class="btn btn-secondary btn-sm" style="flex:1; padding:4px 2px; font-size:11px;" onclick="ONSRA_ADMIN.copyImagePath(\'' + fullPath + '\')" title="पाथ कॉपी करा">📋 कॉपी</button>' +
+          '<button type="button" class="btn btn-sm" style="flex:1; padding:4px 2px; font-size:11px; background:#ef4444; color:#fff; border:none; border-radius:4px; cursor:pointer;" onclick="ONSRA_ADMIN.deleteImage(\'' + filename + '\', \'' + sha + '\')" title="हा फोटो कायमचा डिलीट करा">🗑 डिलीट</button>' +
+        '</div>';
       gallery.appendChild(div);
     });
   }
@@ -557,18 +619,59 @@
       });
   }
 
-  function handleImageUpload(e) {
-    var file = e.target.files[0];
-    if (!file) return;
+  function compressImage(file, maxWidth, maxHeight, quality, callback) {
+    if (file.type === 'image/svg+xml') {
+      var reader = new FileReader();
+      reader.onload = function (e) { callback(e.target.result); };
+      reader.readAsDataURL(file);
+      return;
+    }
 
     var reader = new FileReader();
-    reader.onload = function (evt) {
-      var base64Data = evt.target.result;
-      var cleanFilename = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        var width = img.width;
+        var height = img.height;
 
-      showToast('फोटो अपलोड होत आहे: ' + cleanFilename, 'info');
+        if (width > maxWidth || height > maxHeight) {
+          if (width / height > maxWidth / maxHeight) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
 
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        var outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        var dataUrl = canvas.toDataURL(outputType, quality || 0.85);
+        callback(dataUrl);
+      };
+      img.onerror = function () {
+        callback(e.target.result);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleImageUpload(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    var cleanFilename = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
+    showToast('फोटो तयार करत आहे: ' + cleanFilename + '...', 'info');
+
+    compressImage(file, 1920, 1920, 0.85, function (base64Data) {
       if (isLocal) {
+        showToast('स्थानिक सर्व्हरवर अपलोड करत आहे...', 'info');
         fetch('/api/upload-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -577,48 +680,77 @@
           .then(function (res) { return res.json(); })
           .then(function (resData) {
             if (resData.success) {
-              showToast('फोटो यशस्वीरीत्या अपलोड झाला: ' + resData.path, 'success');
+              showToast('फोटो यशस्वीरीत्या अपलोड झाला: ' + resData.path + ' 🎉', 'success');
               loadGalleryImages();
+              if (e.target) e.target.value = '';
             } else {
-              showToast('फोटो अपलोड त्रुटी: ' + resData.error, 'error');
+              showToast('फोटो अपलोड त्रुटी: ' + (resData.error || 'Unknown'), 'error');
             }
+          })
+          .catch(function (err) {
+            showToast('फोटो अपलोड सर्व्हर त्रुटी: ' + err.message, 'error');
           });
       } else {
-        // Upload via GitHub Contents API
         var token = localStorage.getItem(GITHUB_TOKEN_KEY);
         if (!token) {
           showToast('फोटो अपलोड करण्यासाठी GitHub टोकन आवश्यक आहे!', 'error');
-          tokenModal.classList.add('open');
+          if (tokenModal) tokenModal.classList.add('open');
           return;
         }
 
         var rawBase64 = base64Data.split(',')[1];
-        var putUrl = 'https://api.github.com/repos/' + GITHUB_REPO + '/contents/images/' + cleanFilename;
+        var fileUrl = 'https://api.github.com/repos/' + GITHUB_REPO + '/contents/images/' + cleanFilename;
         var headers = {
           'Accept': 'application/vnd.github.v3+json',
           'Authorization': 'token ' + token
         };
 
-        fetch(putUrl, {
-          method: 'PUT',
-          headers: headers,
-          body: JSON.stringify({
-            message: 'Upload ' + cleanFilename + ' via ONSRA Web Admin',
-            content: rawBase64,
-            branch: GITHUB_BRANCH
+        showToast('GitHub वर फाईल तपासत आहे...', 'info');
+
+        // Check if file exists to supply existing sha
+        fetch(fileUrl + '?ref=' + GITHUB_BRANCH, { headers: headers })
+          .then(function (res) {
+            if (res.ok) {
+              return res.json().then(function (info) { return info.sha; });
+            }
+            return null;
           })
-        })
-          .then(function (res) { return res.json(); })
+          .catch(function () { return null; })
+          .then(function (existingSha) {
+            showToast('GitHub वर फोटो अपलोड करत आहे: ' + cleanFilename, 'info');
+            var payload = {
+              message: 'Upload ' + cleanFilename + ' via ONSRA Web Admin',
+              content: rawBase64,
+              branch: GITHUB_BRANCH
+            };
+            if (existingSha) {
+              payload.sha = existingSha;
+            }
+
+            return fetch(fileUrl, {
+              method: 'PUT',
+              headers: headers,
+              body: JSON.stringify(payload)
+            });
+          })
+          .then(function (res) {
+            if (!res.ok) {
+              return res.json().then(function (errData) {
+                throw new Error(errData.message || ('GitHub API Error ' + res.status));
+              });
+            }
+            return res.json();
+          })
           .then(function () {
-            showToast('फोटो GitHub वर यशस्वीरीत्या अपलोड झाला: images/' + cleanFilename, 'success');
+            showToast('फोटो GitHub वर यशस्वीरीत्या अपलोड झाला: images/' + cleanFilename + ' 🚀', 'success');
             loadGalleryImages();
+            if (e.target) e.target.value = '';
           })
           .catch(function (err) {
             showToast('फोटो अपलोड त्रुटी: ' + err.message, 'error');
           });
       }
-    };
-    reader.readAsDataURL(file);
+    });
   }
 
   /* ------------------- Tab Switching ------------------- */
@@ -765,6 +897,84 @@
       navigator.clipboard.writeText(path).then(function () {
         showToast('फोटो पाथ कॉपी झाला: ' + path, 'success');
       });
+    },
+    refreshGallery: function () {
+      loadGalleryImages();
+    },
+    deleteImage: function (filename, sha) {
+      if (!confirm('तुम्हाला खरोखर "' + filename + '" हा फोटो डिलीट करायचा आहे का?\n\nहा फोटो गॅलरीमधून व वेबसाईटवरून कायमचा काढला जाईल.')) {
+        return;
+      }
+
+      showToast('फोटो डिलीट करत आहे: ' + filename + '...', 'info');
+
+      if (isLocal) {
+        fetch('/api/delete-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: filename })
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (resData) {
+            if (resData.success) {
+              showToast('फोटो यशस्वीरीत्या डिलीट झाला: ' + filename + ' 🗑', 'success');
+              loadGalleryImages();
+            } else {
+              showToast('फोटो डिलीट करताना त्रुटी: ' + (resData.error || 'Unknown'), 'error');
+            }
+          })
+          .catch(function (err) {
+            showToast('सर्व्हर त्रुटी: ' + err.message, 'error');
+          });
+      } else {
+        var token = localStorage.getItem(GITHUB_TOKEN_KEY);
+        if (!token) {
+          showToast('फोटो डिलीट करण्यासाठी GitHub टोकन आवश्यक आहे!', 'error');
+          if (tokenModal) tokenModal.classList.add('open');
+          return;
+        }
+
+        var headers = {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': 'token ' + token
+        };
+        var fileUrl = 'https://api.github.com/repos/' + GITHUB_REPO + '/contents/images/' + filename;
+
+        var getShaPromise = sha ? Promise.resolve(sha) : fetch(fileUrl + '?ref=' + GITHUB_BRANCH, { headers: headers })
+          .then(function (res) {
+            if (!res.ok) throw new Error('फाईल माहिती मिळाली नाही (' + res.status + ')');
+            return res.json();
+          })
+          .then(function (data) { return data.sha; });
+
+        getShaPromise
+          .then(function (fileSha) {
+            return fetch(fileUrl, {
+              method: 'DELETE',
+              headers: headers,
+              body: JSON.stringify({
+                message: 'Delete ' + filename + ' via ONSRA Web Admin',
+                sha: fileSha,
+                branch: GITHUB_BRANCH
+              })
+            });
+          })
+          .then(function (res) {
+            if (!res.ok) {
+              return res.json().then(function (errData) {
+                throw new Error(errData.message || ('GitHub API Error ' + res.status));
+              });
+            }
+            return res.json();
+          })
+          .then(function () {
+            showToast('फोटो GitHub वरून यशस्वीरीत्या डिलीट झाला: ' + filename + ' 🗑', 'success');
+            loadGalleryImages();
+          })
+          .catch(function (err) {
+            showToast('फोटो डिलीट करताना त्रुटी: ' + err.message, 'error');
+          });
+      }
     }
   };
 
