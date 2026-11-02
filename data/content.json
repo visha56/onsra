@@ -16,16 +16,16 @@
     "badge": "🌸 Yoga Alliance Certified Ashram in Goa",
     "title": "Where Ancient Wisdom Meets Ocean Breeze",
     "subtitle": "Join our certified 200-Hour Yoga Teacher Training and transformative retreats in the lush heart of Goa, India. Authentic Hatha, Pranayama, Meditation & Ashram Living.",
-    "bgImage": "images/hero-bg.jpg",
     "ctaText": "Explore 200-Hr TTC",
     "ctaLink": "training.html",
     "secondaryCtaText": "Apply for November Batch",
-    "secondaryCtaLink": "contact.html#booking"
+    "secondaryCtaLink": "contact.html#booking",
+    "bgImage": "images/hero-bg.jpg"
   },
   "philosophy": {
+    "badge": "Our Philosophy",
     "quote": "Yoga is not about touching your toes. It is about what you learn on the way down.",
     "cite": "— Jigar Gor",
-    "badge": "Our Philosophy",
     "title": "Rooted in Tradition, Open to the World",
     "text1": "ONSRA Yoga Ashram is a sacred space in the heart of Goa, where ancient yogic wisdom meets the transformative power of the ocean. We offer immersive yoga teacher training and retreats for students from across the globe who seek an authentic, traditional experience.",
     "text2": "Our 200-Hour Yoga Teacher Training Course follows the classical Hatha Yoga tradition, taught by experienced masters in a living ashram environment — with organic meals, breathwork, philosophy, and community."
@@ -222,7 +222,7 @@
     {
       "id": "twin",
       "title": "Twin / Couple Room",
-      "image": "images/womens-retreat.jpg",
+      "image": "images/dsc01050.jpg",
       "alt": "Couple room ashram",
       "description": "Ideal for couples or friends attending together — a comfortable twin room with all ashram amenities.",
       "amenities": [
