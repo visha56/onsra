@@ -9,17 +9,68 @@
     "email": "info@onsrayoga.com",
     "instagramUrl": "https://www.instagram.com/onsra_yoga__ashram_goa/",
     "instagramHandle": "@onsra_yoga__ashram_goa",
-    "location": "ONSRA Yoga Ashram, Anjuna, North Goa — 403509, Goa, India"
+    "location": "ONSRA Yoga Ashram, Anjuna, North Goa — 403509, Goa, India",
+    "logoImage": "images/logo.png"
   },
   "hero": {
     "badge": "🌸 Yoga Alliance Certified Ashram in Goa",
     "title": "Where Ancient Wisdom Meets Ocean Breeze",
     "subtitle": "Join our certified 200-Hour Yoga Teacher Training and transformative retreats in the lush heart of Goa, India. Authentic Hatha, Pranayama, Meditation & Ashram Living.",
+    "bgImage": "images/hero-bg.jpg",
     "ctaText": "Explore 200-Hr TTC",
     "ctaLink": "training.html",
     "secondaryCtaText": "Apply for November Batch",
     "secondaryCtaLink": "contact.html#booking"
   },
+  "philosophy": {
+    "quote": "Yoga is not about touching your toes. It is about what you learn on the way down.",
+    "cite": "— Jigar Gor",
+    "badge": "Our Philosophy",
+    "title": "Rooted in Tradition, Open to the World",
+    "text1": "ONSRA Yoga Ashram is a sacred space in the heart of Goa, where ancient yogic wisdom meets the transformative power of the ocean. We offer immersive yoga teacher training and retreats for students from across the globe who seek an authentic, traditional experience.",
+    "text2": "Our 200-Hour Yoga Teacher Training Course follows the classical Hatha Yoga tradition, taught by experienced masters in a living ashram environment — with organic meals, breathwork, philosophy, and community."
+  },
+  "programs": [
+    {
+      "id": "ttc200",
+      "title": "200-Hr Yoga Teacher Training",
+      "tag": "⭐ Most Popular",
+      "duration": "24 Days",
+      "location": "Goa, India",
+      "style": "Hatha Yoga",
+      "description": "An immersive, Yoga Alliance USA certified 200-Hour TTC covering classical Hatha, Pranayama, Meditation, Anatomy and Teaching Methodology. November 2026 & 2027 batches open.",
+      "image": "images/ttc-featured.jpg",
+      "priceLabel": "Starting from",
+      "priceAmount": "Contact Us",
+      "link": "training.html"
+    },
+    {
+      "id": "retreat-womens",
+      "title": "Nourish Her — Women's Wellness Retreat",
+      "tag": "🌸 For Women",
+      "duration": "3 Days",
+      "location": "Beachside",
+      "style": "Wellness",
+      "description": "A sacred 3-day immersive retreat designed for women — exploring Hormonal Balance, Self-Love & Self-Confidence through yoga, pranayama, nutrition workshops and satsang.",
+      "image": "images/womens-retreat.jpg",
+      "priceLabel": "Holistic Experience",
+      "priceAmount": "Inquire Now",
+      "link": "retreats.html"
+    },
+    {
+      "id": "ashram-stay",
+      "title": "Ashram Stay & Practice",
+      "tag": "🌿 Ashram Life",
+      "duration": "Flexible",
+      "location": "Residential",
+      "style": "Organic Meals",
+      "description": "Experience authentic ashram living in Goa — daily yoga, meditation, organic farm-to-table meals, sacred community and the healing energy of the ocean. Open for self-practice stays.",
+      "image": "images/ashram-accommodation.jpg",
+      "priceLabel": "Customisable Stay",
+      "priceAmount": "Get in Touch",
+      "link": "accommodation.html"
+    }
+  ],
   "batches": [
     {
       "id": 1,
@@ -186,6 +237,17 @@
   "accommodation": {
     "image": "images/ashram-accommodation.jpg"
   },
+  "about": {
+    "image": "images/ashram-accommodation.jpg",
+    "title": "ONSRA Yoga Ashram",
+    "description": "Nestled in the lush tropical landscape of Goa, ONSRA Yoga Ashram is a sanctuary dedicated to the authentic transmission of traditional yoga."
+  },
+  "instagram": {
+    "img1": "images/ig-beach-yoga.jpg",
+    "img2": "images/ig-meditation.jpg",
+    "img3": "images/ig-sunset.jpg",
+    "img4": "images/ttc-beach-group.jpg"
+  },
   "testimonials": [
     {
       "id": 1,
@@ -218,30 +280,6 @@
       "avatar": "J",
       "rating": 5,
       "text": "As a yoga enthusiast from Australia, I wanted a traditional experience — and ONSRA delivered. The Hatha practice was deep and classical, the philosophy sessions opened my mind, and the Goa atmosphere was perfect. I'm already planning to come back."
-    }
-  ],
-  "programs": [
-    {
-      "id": "ttc200",
-      "title": "200-Hr Yoga Teacher Training",
-      "tag": "⭐ Most Popular",
-      "duration": "24 Days",
-      "location": "Goa, India",
-      "style": "Hatha Yoga",
-      "description": "An immersive, Yoga Alliance USA certified 200-Hour TTC covering classical Hatha, Pranayama, Meditation, Anatomy and Teaching Methodology. November 2026 & 2027 batches open.",
-      "image": "images/ttc-featured.jpg",
-      "link": "training.html"
-    },
-    {
-      "id": "retreat-womens",
-      "title": "Nourish Her: Women's Retreat",
-      "tag": "🌿 Retreat",
-      "duration": "3 Days",
-      "location": "Goa, India",
-      "style": "Restorative & Breathwork",
-      "description": "A sacred ocean-side sanctuary for women to rest, reset and reconnect through grounding yoga, breathwork, sisterhood circles and nourishing sattvic food.",
-      "image": "images/womens-retreat.jpg",
-      "link": "retreats.html"
     }
   ]
 }
