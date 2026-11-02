@@ -151,6 +151,11 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (!err && stats.isDirectory()) {
+      if (!req.url.split('?')[0].endsWith('/')) {
+        res.writeHead(301, { 'Location': req.url.split('?')[0] + '/' + (urlParts[1] ? '?' + urlParts[1] : '') });
+        res.end();
+        return;
+      }
       filePath = path.join(filePath, 'index.html');
     }
     fs.readFile(filePath, (err, content) => {
