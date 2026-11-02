@@ -563,10 +563,249 @@
         flex: 1;
       }
     }
+
+    /* Login Screen Overlay */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(26, 47, 35, 0.94), rgba(15, 28, 21, 0.98)), url('../images/hero-bg.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      max-width: 420px;
+      width: 100%;
+      padding: 36px 32px;
+      text-align: center;
+      animation: modalSlide 0.3s ease-out;
+      border: 1px solid rgba(212, 163, 89, 0.35);
+    }
+
+    .login-box .login-logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: contain;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      border: 2px solid var(--accent);
+      background: #fff;
+      padding: 4px;
+    }
+
+    .login-box h2 {
+      font-size: 1.55rem;
+      color: var(--forest);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .login-box p.login-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .login-form .form-group {
+      margin-bottom: 0;
+    }
+
+    .login-form label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      color: var(--forest);
+    }
+
+    .login-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .login-input-wrap input {
+      width: 100%;
+      padding: 12px 42px 12px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+      background: #FAF8F5;
+      color: var(--text);
+    }
+
+    .login-input-wrap input:focus {
+      border-color: var(--primary);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(44, 74, 56, 0.15);
+    }
+
+    .login-icon {
+      position: absolute;
+      left: 12px;
+      font-size: 1rem;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .toggle-pwd-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 1.1rem;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .toggle-pwd-btn:hover {
+      background: #f1f5f9;
+    }
+
+    .login-error {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #fecaca;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .login-remember {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-login {
+      background: var(--forest);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-login:hover {
+      background: var(--earth);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(44, 74, 56, 0.25);
+    }
+
+    .btn-logout {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-logout:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Admin Login Screen (Displayed when unauthenticated) -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <img src="../images/logo.png" alt="ONSRA Logo" class="login-logo" />
+      <h2>ONSRA Yoga Ashram</h2>
+      <p class="login-sub">वेबसाइट ॲडमिन पॅनल लॉगिन</p>
+
+      <div class="login-error" id="login-error">
+        <span>⚠️</span> <span id="login-error-msg">ईमेल किंवा पासवर्ड चुकीचा आहे.</span>
+      </div>
+
+      <form class="login-form" id="admin-login-form">
+        <div class="form-group">
+          <label for="login-email">ॲडमिन आयडी / ईमेल (Admin ID)</label>
+          <div class="login-input-wrap">
+            <span class="login-icon">✉️</span>
+            <input type="email" id="login-email" placeholder="admin@onsrayoga.com" autocomplete="username" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">पासवर्ड (Password)</label>
+          <div class="login-input-wrap">
+            <span class="login-icon">🔒</span>
+            <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" class="toggle-pwd-btn" id="btn-toggle-pwd" title="पासवर्ड पहा/लपवा">👁</button>
+          </div>
+        </div>
+
+        <div class="login-options">
+          <label class="login-remember">
+            <input type="checkbox" id="login-remember" checked />
+            लॉगिन लक्षात ठेवा (Remember me)
+          </label>
+        </div>
+
+        <button type="submit" class="btn-login" id="btn-login-submit">
+          <span>सुरक्षित लॉगिन करा (Login) ➔</span>
+        </button>
+      </form>
+      <p style="margin-top:20px; font-size:0.75rem; color:var(--text-muted);">
+        🔒 हे ॲडमिन पॅनल केवळ अधिकृत व्यवस्थापकांसाठी सुरक्षित आहे.
+      </p>
+    </div>
+  </div>
+
+  <!-- Admin Main Dashboard Wrapper (Hidden until authenticated) -->
+  <div id="admin-main-wrap" style="display:none;">
 
   <!-- Admin Header -->
   <header class="admin-header">
@@ -585,6 +824,7 @@
       </div>
       <button type="button" class="btn btn-outline btn-sm" id="btn-open-token-modal">🔑 GitHub Token</button>
       <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">👁 वेबसाईट पहा</a>
+      <button type="button" class="btn-logout" id="btn-admin-logout" title="ॲडमिन पॅनलमधून बाहेर पडा">🚪 लॉगआउट</button>
     </div>
   </header>
 
@@ -980,6 +1220,8 @@
     </div>
   </div>
 
+  </div><!-- /admin-main-wrap -->
+
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 
@@ -1013,9 +1255,116 @@
         return base + relativePath.replace(/^\.\//, '').replace(/^\.\.\//, '');
       }
 
-      document.addEventListener('DOMContentLoaded', initAdmin);
+      var AUTH_KEY = 'onsra_admin_auth';
+      var VALID_USER = 'admin@onsrayoga.com';
+      var VALID_PASS = 'onsra@123';
+      var isAdminInitialized = false;
+
+      function isAuthenticated() {
+        return localStorage.getItem(AUTH_KEY) === 'true' || sessionStorage.getItem(AUTH_KEY) === 'true';
+      }
+
+      function setAuthenticated(remember) {
+        if (remember) {
+          localStorage.setItem(AUTH_KEY, 'true');
+        } else {
+          sessionStorage.setItem(AUTH_KEY, 'true');
+        }
+      }
+
+      function clearAuthentication() {
+        localStorage.removeItem(AUTH_KEY);
+        sessionStorage.removeItem(AUTH_KEY);
+      }
+
+      function showAdminDashboard() {
+        var overlay = document.getElementById('login-overlay');
+        var mainWrap = document.getElementById('admin-main-wrap');
+        if (overlay) overlay.style.display = 'none';
+        if (mainWrap) mainWrap.style.display = 'block';
+      }
+
+      function showLoginScreen() {
+        var overlay = document.getElementById('login-overlay');
+        var mainWrap = document.getElementById('admin-main-wrap');
+        if (overlay) overlay.style.display = 'flex';
+        if (mainWrap) mainWrap.style.display = 'none';
+        var emailInput = document.getElementById('login-email');
+        if (emailInput) setTimeout(function () { emailInput.focus(); }, 150);
+      }
+
+      function setupLogin() {
+        var form = document.getElementById('admin-login-form');
+        var emailInput = document.getElementById('login-email');
+        var pwdInput = document.getElementById('login-password');
+        var rememberInput = document.getElementById('login-remember');
+        var errBox = document.getElementById('login-error');
+        var errMsg = document.getElementById('login-error-msg');
+        var togglePwd = document.getElementById('btn-toggle-pwd');
+        var logoutBtn = document.getElementById('btn-admin-logout');
+
+        if (togglePwd && pwdInput) {
+          togglePwd.addEventListener('click', function () {
+            if (pwdInput.type === 'password') {
+              pwdInput.type = 'text';
+              togglePwd.textContent = '🙈';
+            } else {
+              pwdInput.type = 'password';
+              togglePwd.textContent = '👁';
+            }
+          });
+        }
+
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var email = (emailInput ? emailInput.value : '').trim().toLowerCase();
+            var pwd = (pwdInput ? pwdInput.value : '');
+
+            if (email === VALID_USER && pwd === VALID_PASS) {
+              if (errBox) errBox.style.display = 'none';
+              var remember = rememberInput ? rememberInput.checked : true;
+              setAuthenticated(remember);
+              showToast('लॉगिन यशस्वी झाले! स्वागत आहे. 🙏', 'success');
+              showAdminDashboard();
+              initAdmin();
+            } else {
+              if (errBox) {
+                errBox.style.display = 'flex';
+                if (errMsg) errMsg.textContent = 'ईमेल किंवा पासवर्ड चुकीचा आहे! कृपया योग्य माहिती टाका.';
+              }
+              if (pwdInput) {
+                pwdInput.value = '';
+                pwdInput.focus();
+              }
+            }
+          });
+        }
+
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function () {
+            if (confirm('तुम्हाला ॲडमिन पॅनलमधून नक्की लॉगआउट करायचे आहे का?')) {
+              clearAuthentication();
+              showToast('तुम्ही यशस्वीरीत्या लॉगआउट झाला आहात.', 'info');
+              showLoginScreen();
+            }
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        setupLogin();
+        if (isAuthenticated()) {
+          showAdminDashboard();
+          initAdmin();
+        } else {
+          showLoginScreen();
+        }
+      });
 
       function initAdmin() {
+        if (isAdminInitialized) return;
+        isAdminInitialized = true;
         setupTabs();
         setupTokenModal();
         updateConnectionStatus();

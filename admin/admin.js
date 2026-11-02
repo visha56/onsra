@@ -26,9 +26,116 @@
         return base + relativePath.replace(/^\.\//, '').replace(/^\.\.\//, '');
       }
 
-      document.addEventListener('DOMContentLoaded', initAdmin);
+      var AUTH_KEY = 'onsra_admin_auth';
+      var VALID_USER = 'admin@onsrayoga.com';
+      var VALID_PASS = 'onsra@123';
+      var isAdminInitialized = false;
+
+      function isAuthenticated() {
+        return localStorage.getItem(AUTH_KEY) === 'true' || sessionStorage.getItem(AUTH_KEY) === 'true';
+      }
+
+      function setAuthenticated(remember) {
+        if (remember) {
+          localStorage.setItem(AUTH_KEY, 'true');
+        } else {
+          sessionStorage.setItem(AUTH_KEY, 'true');
+        }
+      }
+
+      function clearAuthentication() {
+        localStorage.removeItem(AUTH_KEY);
+        sessionStorage.removeItem(AUTH_KEY);
+      }
+
+      function showAdminDashboard() {
+        var overlay = document.getElementById('login-overlay');
+        var mainWrap = document.getElementById('admin-main-wrap');
+        if (overlay) overlay.style.display = 'none';
+        if (mainWrap) mainWrap.style.display = 'block';
+      }
+
+      function showLoginScreen() {
+        var overlay = document.getElementById('login-overlay');
+        var mainWrap = document.getElementById('admin-main-wrap');
+        if (overlay) overlay.style.display = 'flex';
+        if (mainWrap) mainWrap.style.display = 'none';
+        var emailInput = document.getElementById('login-email');
+        if (emailInput) setTimeout(function () { emailInput.focus(); }, 150);
+      }
+
+      function setupLogin() {
+        var form = document.getElementById('admin-login-form');
+        var emailInput = document.getElementById('login-email');
+        var pwdInput = document.getElementById('login-password');
+        var rememberInput = document.getElementById('login-remember');
+        var errBox = document.getElementById('login-error');
+        var errMsg = document.getElementById('login-error-msg');
+        var togglePwd = document.getElementById('btn-toggle-pwd');
+        var logoutBtn = document.getElementById('btn-admin-logout');
+
+        if (togglePwd && pwdInput) {
+          togglePwd.addEventListener('click', function () {
+            if (pwdInput.type === 'password') {
+              pwdInput.type = 'text';
+              togglePwd.textContent = '🙈';
+            } else {
+              pwdInput.type = 'password';
+              togglePwd.textContent = '👁';
+            }
+          });
+        }
+
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var email = (emailInput ? emailInput.value : '').trim().toLowerCase();
+            var pwd = (pwdInput ? pwdInput.value : '');
+
+            if (email === VALID_USER && pwd === VALID_PASS) {
+              if (errBox) errBox.style.display = 'none';
+              var remember = rememberInput ? rememberInput.checked : true;
+              setAuthenticated(remember);
+              showToast('लॉगिन यशस्वी झाले! स्वागत आहे. 🙏', 'success');
+              showAdminDashboard();
+              initAdmin();
+            } else {
+              if (errBox) {
+                errBox.style.display = 'flex';
+                if (errMsg) errMsg.textContent = 'ईमेल किंवा पासवर्ड चुकीचा आहे! कृपया योग्य माहिती टाका.';
+              }
+              if (pwdInput) {
+                pwdInput.value = '';
+                pwdInput.focus();
+              }
+            }
+          });
+        }
+
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function () {
+            if (confirm('तुम्हाला ॲडमिन पॅनलमधून नक्की लॉगआउट करायचे आहे का?')) {
+              clearAuthentication();
+              showToast('तुम्ही यशस्वीरीत्या लॉगआउट झाला आहात.', 'info');
+              showLoginScreen();
+            }
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        setupLogin();
+        if (isAuthenticated()) {
+          showAdminDashboard();
+          initAdmin();
+        } else {
+          showLoginScreen();
+        }
+      });
 
       function initAdmin() {
+        if (isAdminInitialized) return;
+        isAdminInitialized = true;
         setupTabs();
         setupTokenModal();
         updateConnectionStatus();
