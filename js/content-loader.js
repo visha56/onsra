@@ -126,15 +126,15 @@
   function hydrateRooms(rooms) {
     if (!rooms || !Array.isArray(rooms) || rooms.length === 0) return;
 
-    var roomContainer = document.querySelector('.grid-3[style*="margin-top:40px"]');
+    var roomContainer = document.querySelector('.grid-3[style*="margin-top:40px"]') ||
+      (document.querySelector('.room-card') ? document.querySelector('.room-card').parentElement : null);
     if (roomContainer) {
       var html = rooms.map(function (r, index) {
-        var delay = (index + 1);
         var amenitiesHtml = (r.amenities || []).map(function (am) {
           return '<span class="amenity-tag">' + am + '</span>';
         }).join('');
 
-        return '<div class="room-card" data-reveal data-reveal-delay="' + delay + '">' +
+        return '<div class="room-card revealed" style="opacity:1 !important; transform:none !important;">' +
           '<div class="room-img"><img src="' + r.image + '" alt="' + (r.alt || r.title) + '" /></div>' +
           '<div class="room-body">' +
           '<h3>' + r.title + '</h3>' +
