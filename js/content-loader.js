@@ -20,6 +20,7 @@
         hydrateBatches(data.batches);
         hydrateSchedule(data.schedule);
         hydrateRooms(data.rooms);
+        hydrateAccommodation(data.accommodation);
         hydrateTestimonials(data.testimonials);
         hydratePrograms(data.programs);
       })
@@ -173,6 +174,14 @@
           '</div>';
       }).join('');
       track.innerHTML = html;
+    }
+  }
+
+  function hydrateAccommodation(acc) {
+    if (!acc || !acc.image) return;
+    var accImg = document.querySelector('img[alt="ONSRA Yoga Ashram accommodation Goa"]');
+    if (accImg) {
+      accImg.src = acc.image;
     }
   }
 

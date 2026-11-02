@@ -649,6 +649,28 @@ textarea {
     <div class="tab-pane" id="tab-rooms">
       <div class="card">
         <div class="card-title">
+          <span>🏢 आश्रम ॲकोमोडेशन मुख्य फोटो (Your Home for 24 Days)</span>
+        </div>
+        <p class="card-subtitle">Accommodation पेजवरील 'Your Home for 24 Days' समोरील मुख्य फोटो येथे थेट बदला किंवा गॅलरीमधून निवडा.</p>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>फोटो पाथ (Photo Path)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="input-acc-img" value="images/ashram-accommodation.jpg" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="ONSRA_ADMIN.pickImageFor('input-acc-img', 0, 'acc')">🖼 निवडा</button>
+            </div>
+          </div>
+          <div class="form-group full">
+            <div class="img-picker-wrap">
+              <img src="../images/ashram-accommodation.jpg" id="acc-preview-img" class="img-preview" alt="Accommodation Preview" style="height:140px; object-fit:cover; border-radius:6px;" />
+              <span style="font-size:0.85rem; color:var(--text-muted);">'Your Home for 24 Days' समोरील सध्याचा मुख्य फोटो प्रीव्ह्यू.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
           <span>🛏 खोल्यांचे प्रकार आणि फोटो (Accommodation Rooms)</span>
         </div>
         <p class="card-subtitle">Accommodation पेजवरील खोल्यांची नावे, फोटो, वर्णन आणि सुविधा (Amenities) बदला.</p>
@@ -1048,6 +1070,12 @@ textarea {
   }
 
   function renderRooms() {
+    var accInput = document.getElementById('input-acc-img');
+    var accPreview = document.getElementById('acc-preview-img');
+    var accImg = (siteData.accommodation && siteData.accommodation.image) ? siteData.accommodation.image : 'images/ashram-accommodation.jpg';
+    if (accInput) accInput.value = accImg;
+    if (accPreview) accPreview.src = resolveAsset(accImg);
+
     var container = document.getElementById('rooms-list');
     var rooms = siteData.rooms || [];
     container.innerHTML = '';
@@ -1277,6 +1305,12 @@ textarea {
       ttc.title = document.getElementById('input-ttc-title').value.trim();
       ttc.description = document.getElementById('input-ttc-desc').value.trim();
       ttc.image = document.getElementById('input-ttc-img').value.trim();
+    }
+
+    if (!siteData.accommodation) siteData.accommodation = {};
+    var accInput = document.getElementById('input-acc-img');
+    if (accInput) {
+      siteData.accommodation.image = accInput.value.trim() || 'images/ashram-accommodation.jpg';
     }
   }
 
@@ -1694,6 +1728,11 @@ textarea {
         } else if (type === 'ttc') {
           var ttcPreview = document.getElementById('ttc-preview-img');
           if (ttcPreview) ttcPreview.src = resolveAsset(path);
+        } else if (type === 'acc') {
+          var accPreview = document.getElementById('acc-preview-img');
+          if (accPreview) accPreview.src = resolveAsset(path);
+          if (!siteData.accommodation) siteData.accommodation = {};
+          siteData.accommodation.image = path;
         }
       }
     },

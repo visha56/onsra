@@ -252,6 +252,12 @@
 
   /* 4. Rooms */
   function renderRooms() {
+    var accInput = document.getElementById('input-acc-img');
+    var accPreview = document.getElementById('acc-preview-img');
+    var accImg = (siteData.accommodation && siteData.accommodation.image) ? siteData.accommodation.image : 'images/ashram-accommodation.jpg';
+    if (accInput) accInput.value = accImg;
+    if (accPreview) accPreview.src = '../' + accImg;
+
     var container = document.getElementById('rooms-list');
     var rooms = siteData.rooms || [];
     container.innerHTML = '';
@@ -488,6 +494,12 @@
       ttc.title = document.getElementById('input-ttc-title').value.trim();
       ttc.description = document.getElementById('input-ttc-desc').value.trim();
       ttc.image = document.getElementById('input-ttc-img').value.trim();
+    }
+
+    if (!siteData.accommodation) siteData.accommodation = {};
+    var accInput = document.getElementById('input-acc-img');
+    if (accInput) {
+      siteData.accommodation.image = accInput.value.trim() || 'images/ashram-accommodation.jpg';
     }
   }
 
@@ -890,6 +902,11 @@
         } else if (type === 'ttc') {
           var ttcPreview = document.getElementById('ttc-preview-img');
           if (ttcPreview) ttcPreview.src = '../' + path;
+        } else if (type === 'acc') {
+          var accPreview = document.getElementById('acc-preview-img');
+          if (accPreview) accPreview.src = '../' + path;
+          if (!siteData.accommodation) siteData.accommodation = {};
+          siteData.accommodation.image = path;
         }
       }
     },

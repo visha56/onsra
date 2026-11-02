@@ -183,6 +183,9 @@
       "inquireLink": "contact.html#booking"
     }
   ],
+  "accommodation": {
+    "image": "images/ashram-accommodation.jpg"
+  },
   "testimonials": [
     {
       "id": 1,
